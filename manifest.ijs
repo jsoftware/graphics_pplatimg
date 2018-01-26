@@ -15,9 +15,9 @@ Ported to 64-bit platforms by Bill Lam
 Based on media/platimg developed by Oleg Kobchenko
 )
 
-VERSION=: '1.0.00'
+VERSION=: '1.0.01'
 
-RELEASE=: 'j804 j805 j806'
+RELEASE=: 'j804 j805 j806 j807'
 
 PLATFORMS=: 'linux win darwin'
 
