@@ -17,7 +17,9 @@ Based on media/platimg developed by Oleg Kobchenko
 
 VERSION=: '1.0.01'
 
-RELEASE=: 'j804 j805 j806 j807'
+RELEASE=: ''
+
+FOLDER=: 'graphics/pplatimg'
 
 PLATFORMS=: 'linux win darwin'
 
@@ -26,4 +28,3 @@ manifest.ijs
 pplatimg.ijs
 test.ijs
 )
-
