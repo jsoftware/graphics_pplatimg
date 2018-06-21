@@ -4,17 +4,21 @@ Note 'Examples Usage'
  * select all Ctrl+A and run Ctrl+E
 )
 
-require 'viewmat bmp'          NB. require toucan.bmp for testing
+USEPPPNG_z_=: 0
 
-load 'graphics/pplatimg'       NB. ensure reload for testing
+load 'graphics/png bmp'     NB. require toucan.bmp for testing
 
-viewrgb T=. readimg_pplatimg_ jpath'~addons/graphics/bmp/toucan.bmp'
+load 'graphics/pplatimg'    NB. ensure reload for testing
+
+T1=: T=. readimg_pplatimg_ jpath'~addons/graphics/bmp/toucan.bmp'
 T writeimg_pplatimg_ jpath'~temp/toucan.jpg'
 T writeimg_pplatimg_ jpath'~temp/toucan.png'
-viewrgb readimg_pplatimg_ jpath'~temp/toucan.jpg'
-viewrgb readimg_pplatimg_ jpath'~temp/toucan.png'
+T -: T1=: readimg_pplatimg_ jpath'~temp/toucan.png'
+T -: T2=: readpng jpath'~temp/toucan.png'
+T1 -: T2
 
-(setalpha T=. i.320 320) writeimg_pplatimg_ jpath'~temp/test1.png'
-T -: 0&setalpha readimg_pplatimg_ jpath'~temp/test1.png'
-viewrgb readimg_pplatimg_ jpath'~temp/test1.png'
-viewrgb T
+(T=. setalpha i.320 320) writeimg_pplatimg_ jpath'~temp/test1.png'
+T -: readimg_pplatimg_ jpath'~temp/test1.png'
+T writepng jpath '~temp/test2.png'
+T -: readpng jpath'~temp/test2.png'
+T -: readimg_pplatimg_ jpath'~temp/test2.png'
