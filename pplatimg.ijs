@@ -421,7 +421,7 @@ img
 ()
 
 NB. =========================================================
-wstr=: (''"_)`([: ({.~ i.&({.a.)) 6: u: [:memr ,&(0,40))@.*
+wstr=: (''"_)`([: ({.~ i.&({.a.)) 6: u: [:memr ,&(0,40))@.*("0)
 
 encoder=: 3 : 0
 NUM=. ,_1 [ SZ=. ,_1
@@ -433,7 +433,7 @@ ENCS=. _1{::cdrc
 ENCS=. NUM{.ENCS
 guids=. (#GUID){.("1) ENCS
 infoaddr=. (IF64{_2 _3)(3!:4)("1) ( (0,2*#GUID) ,: _,(IF64{4 8)*5 ) ];.0 ENCS
-infos=. <@wstr("0) infoaddr
+infos=. <@wstr infoaddr
 guids {~ y typendx tolower&.> 3{("1) infos
 ()
 )
