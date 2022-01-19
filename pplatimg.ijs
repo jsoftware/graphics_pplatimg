@@ -474,7 +474,7 @@ CGImageRelease=:                     'CGImageRelease                   > n   x  
 CGColorSpaceCreateWithName=:         'CGColorSpaceCreateWithName       > x   x         ' ascd
 CGColorSpaceRelease=:                'CGColorSpaceRelease              > n   x         ' ascd
 
-CGBitmapContextCreate=:              'CGBitmapContextCreate            > x   *i x x   x x x i ' ascd
+CGBitmapContextCreate=:              'CGBitmapContextCreate            > x   x  x x   x x x i ' ascd
 CGContextRelease=:                   'CGContextRelease                 > n   x         ' ascd
 CGContextDrawImage=:                 (IF64{::'CGContextDrawImage       > n   x f f f f x ';'CGContextDrawImage > n x x x x x x x x x x ') ascd
 
@@ -482,12 +482,12 @@ kCGColorSpaceGenericRGB=: 'kCGColorSpaceGenericRGB'
 kCGImageAlphaPremultipliedFirst=: 2
 
 NB. =========================================================
-MAT=: i.0 0
+pMAT=: 0
 bitmapContext=: 4 : 0       NB.  release ctx
   s=. cfstr kCGColorSpaceGenericRGB
   CFRelease s [ cs=. CGColorSpaceCreateWithName s
 
-  ctx=. CGBitmapContextCreate MAT;x;y;8;(x*4);cs;kCGImageAlphaPremultipliedFirst
+  ctx=. CGBitmapContextCreate pMAT;x;y;8;(x*4);cs;kCGImageAlphaPremultipliedFirst
   CGColorSpaceRelease cs
   ctx
 ()
@@ -506,7 +506,7 @@ readimg=: 3 : 0
   w=. CGImageGetWidth img
   h=. CGImageGetHeight img
 
-  MAT=: (h,w)$_1
+  pMAT=: mema 4*h*w
   ctx=. w bitmapContext h
 
   if. IF64 do.
@@ -519,7 +519,9 @@ NB. sysv abi, structure size > 16 bytes always passed on stack
   end.
   CGContextRelease ctx
   CGImageRelease img
-  (h,w)$_2 ic , |.("1) _4]\ (IF64{2 3) ic ,MAT
+  z=. (h,w)$_2 ic , |.("1) _4]\ memr pMAT,0,(4*h*w),2
+  pMAT=:0 [ memf pMAT
+  z
 ()
 
 NB. y rank-1 byte string
@@ -551,10 +553,11 @@ writeimg=: 4 : 0
   x=. rgbmat x
   'h w'=. $x
 
+  pMAT=: mema 4*h*w
   if. IF64 do.
-  MAT=: (h,w)$_3 ic , |.@(4&{.)("1) _8]\ 3 ic ,x
+  (, |.@(4&{.)("1) _8]\ 3 ic ,x) memw pMAT,0,(4*h*w),2
   else.
-  MAT=: (h,w)$_2 ic , |.("1) _4]\ 2 ic ,x
+  ((h,w)$_2 ic , |.("1) _4]\ 2 ic ,x) memw pMAT,0,(h*w),4
   end.
   ctx=. w bitmapContext h
 
@@ -565,7 +568,7 @@ writeimg=: 4 : 0
 
   CGImageRelease img
   CGContextRelease ctx
-  MAT=: i.0 0
+  pMAT=: 0 [  memf pMAT
   4*w*h
 ()
 
@@ -574,10 +577,11 @@ putimg=: 4 : 0
   x=. rgbmat x
   'h w'=. $x
 
+  pMAT=: mema 4*h*w
   if. IF64 do.
-  MAT=: (h,w)$_3 ic , |.@(4&{.)("1) _8]\ 3 ic ,x
+  (, |.@(4&{.)("1) _8]\ 3 ic ,x) memw pMAT,0,(4*h*w),2
   else.
-  MAT=: (h,w)$_2 ic , |.("1) _4]\ 2 ic ,x
+  ((h,w)$_2 ic , |.("1) _4]\ 2 ic ,x) memw pMAT,0,(h*w),4
   end.
   ctx=. w bitmapContext h
 
@@ -590,7 +594,7 @@ putimg=: 4 : 0
   CFRelease data
   CGImageRelease img
   CGContextRelease ctx
-  MAT=: i.0 0
+  pMAT=: 0 [ memf pMAT
   buf
 ()
 
