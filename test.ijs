@@ -22,6 +22,7 @@ load 'graphics/pplatimg'    NB. ensure reload for testing
 (200 300$256#.255 0 0) -: 0 setalpha readimg_pplatimg_ jpath'~temp/red1.png'
 
 T1=: T=. readimg_pplatimg_ jpath'~addons/graphics/bmp/toucan.bmp'
+T1 -:  getimg_pplatimg_ fread '~addons/graphics/bmp/toucan.bmp'   NB. read from memory
 T writeimg_pplatimg_ jpath'~temp/toucan.jpg'
 T writeimg_pplatimg_ jpath'~temp/toucan.png'
 T -: T1=: readimg_pplatimg_ jpath'~temp/toucan.png'
