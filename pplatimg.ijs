@@ -9,6 +9,17 @@ NB.
 
 coclass 'pplatimg'
 
+NB. set default to avoid possible undefined noun error
+3 : 0''
+if. (0~: 4!:0<'LIBGLIB') do.
+ LIBGLIB=: 'libgobject-2.0.so.0 '
+end.
+if. (0~: 4!:0<'LIBGDKPIX') do.
+ LIBGDKPIX=: 'libgdk_pixbuf-2.0.so.0 '
+end.
+EMPTY
+)
+
 pplatimg_linux=: 0 : 0
 
 LIBGLIB=: 'libgobject-2.0.so.0 '
@@ -642,7 +653,7 @@ m=. y = <'()', LF
 ;(<')', LF) (I.m) } y
 )
 
-(0!:100) macrofix ('pplatimg_',tolower UNAME)~
+(0!:100) macrofix ('pplatimg_',tolower ('Win';'Darwin';'Linux') {~ ('Win';'Darwin') i. <UNAME)~
 
 rgbmat=: 3 : 0
 'empty data' assert 0<#y
