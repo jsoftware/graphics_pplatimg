@@ -15,7 +15,7 @@ Ported to 64-bit platforms by Bill Lam
 Based on media/platimg developed by Oleg Kobchenko
 )
 
-VERSION=: '1.0.06'
+VERSION=: '1.0.07'
 
 RELEASE=: ''
 

@@ -653,7 +653,7 @@ m=. y = <'()', LF
 ;(<')', LF) (I.m) } y
 )
 
-(0!:100) macrofix ('pplatimg_',tolower ('Win';'Darwin';'Linux') {~ ('Win';'Darwin') i. <UNAME)~
+(0!:100) macrofix ('pplatimg_',tolower ('Win';'Darwin';'Linux') {::~ ('Win';'Darwin') i. <UNAME)~
 
 rgbmat=: 3 : 0
 'empty data' assert 0<#y
